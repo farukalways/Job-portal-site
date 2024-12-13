@@ -15,8 +15,32 @@ const handleRegister = (e) =>{
   const userName = form.Username.value;
   const password = form.password.value;
   const rePassword = form.rePassword.value;
-  console.log(fullName, email, userName, password, rePassword);
+
+
+
+  if (password.length < 6) {
+    setError("Password must be at least 6 characters long.");
+    return;
+  }
+
+  if (password !== rePassword) {
+    setError("Passwords do't match.");
+    return;
+  }
+
+  if(!/[a-z]/.test(password)){
+    setError("one lowercase add")
+    return;
+  }
+  if(!/[A-Z]/.test(password)){
+    setError("one Uppercase add")
+    return;
+  }
+  
+  setError('');
+  // console.log(fullName, email, userName, password, rePassword);
 }
+  
 
 
   return (
@@ -42,34 +66,36 @@ const handleRegister = (e) =>{
         <form className="w-full" onSubmit={handleRegister}>
           <div className="form-control mb-3">
             <label className="label">
-              <span className="label-text">Full Name*</span>
+              <span className="label-text font-semibold">Full Name*</span>
             </label>
             <input type="text" name='fullName' placeholder="Full Name" className="input input-bordered " required />
           </div>
           <div className="form-control mb-3">
             <label className="label">
-              <span className="label-text">Email*</span>
+              <span className="label-text font-semibold">Email*</span>
             </label>
             <input type="email" name='email' placeholder="email" className="input input-bordered " required />
           </div>
           <div className="form-control mb-3">
             <label className="label">
-              <span className="label-text">Username*</span>
+              <span className="label-text font-semibold">Username*</span>
             </label>
             <input type="text" name='Username' placeholder="Username" className="input input-bordered " required />
           </div>
           <div className="form-control mb-3">
             <label className="label">
-              <span className="label-text">Password*</span>
+              <span className="label-text font-semibold">Password*</span>
             </label>
             <input type="password" name='password' placeholder="password" className="input input-bordered" required />
           </div>
           <div className="form-control mb-3">
             <label className="label">
-              <span className="label-text">Re-Password*</span>
+              <span className="label-text font-semibold">Re-Password*</span>
             </label>
             <input type="password" name='rePassword' placeholder="Re-Password" className="input input-bordered" required />
-            
+            {
+              error && <p className='text-red-500 text-start'>{error}</p>
+            }
           </div>
           <div className="flex items-center gap-2 mb-3">
             <label className="cursor-pointer label">
@@ -80,7 +106,7 @@ const handleRegister = (e) =>{
           <div className="form-control mt-6">
             <button className="btn btn-primary rounded-md border-none bg-[#05264e] hover:to-blue-400">Submit & Register</button>
           </div>
-          <p className='text-center my-5'>Already have an account? <Link >Sign in</Link></p>
+          <p className='text-center my-5'>Already have an account? <Link to={'/signIn'} >Sign in</Link></p>
         </form>
       </div>
       <div className="lg:w-4/12 hidden lg:block">

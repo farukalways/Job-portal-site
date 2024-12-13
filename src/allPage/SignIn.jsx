@@ -50,12 +50,6 @@ const SignIn = () => {
           </div>
 
           <div className='flex items-center justify-between mb-3'>
-          <div className="flex items-center gap-2 ">
-            <label className="cursor-pointer label">
-              <input type="checkbox" defaultChecked className="checkbox checkbox-info" />
-            </label>
-            <span className="label-text">Agree and terms and policy</span>
-          </div>
             <label className="label">
               <Link to="#" className="label-text-alt link link-hover text-sm">Forgot password?</Link>
             </label>
@@ -63,7 +57,8 @@ const SignIn = () => {
           <div className="form-control mt-6">
             <button className="btn btn-primary rounded-md border-none bg-[#05264e] hover:to-blue-400">Login</button>
           </div>
-          <p className='text-center my-5'>Don't have an Account? <Link >Sign up</Link></p>
+          <p className='text-center my-5'>Don't have an Account? <Link 
+          to={'/register'} >Register </Link></p>
         </form>
       </div>
       <div className="lg:w-4/12 hidden lg:block">
