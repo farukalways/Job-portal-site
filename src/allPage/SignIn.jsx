@@ -2,17 +2,31 @@ import Lottie from 'lottie-react';
 import registration from '../assets/registration.json'
 import google from '../assets/image/google.png'
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useContext } from 'react';
+import AuthContext from '../ciontext/AuthContext';
 
 const SignIn = () => {
-  const [error, setError] = useState('')
+  // const [error, setError] = useState('')
+  const {userLogin, googleLogin} = useContext(AuthContext)
+
+  const handleGoogleLogin= ()=>{
+    googleLogin()
+  }
 
   const handleLogin = (e) => {
     e.preventDefault()
     const form = e.target;
-    const nameOrEmail = form.NameOrEmail.value;
+    const email = form.email.value;
     const password = form.password.value;
-    console.log(nameOrEmail,  password);
+    userLogin(email, password)
+    .then(result => {
+      console.log(result);
+    })
+    .catch(error=>{
+      console.log(error.message);
+    })
+  
+    form.reset();
   }
 
 
@@ -27,7 +41,9 @@ const SignIn = () => {
           <p className='my-2'>Access to all features. No credit card required.</p>
         </div>
         <button
-          className='w-full flex items-center justify-center gap-2 border p-3 my-5'>
+          className='w-full flex items-center justify-center gap-2 border p-3 my-5'
+          onClick={handleGoogleLogin}
+          >
           <img
             className='w-7'
             src={google} alt="" />
@@ -40,7 +56,7 @@ const SignIn = () => {
             <label className="label">
               <span className="label-text">Username or Email address *</span>
             </label>
-            <input type="text" name='NameOrEmail' placeholder="Username or Email address" className="input input-bordered " required />
+            <input type="email" name='email' placeholder="Email address" className="input input-bordered " required />
           </div>
           <div className="form-control mb-3">
             <label className="label">

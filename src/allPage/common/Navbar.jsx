@@ -1,6 +1,14 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import AuthContext from "../../ciontext/AuthContext";
 
 const Navbar = () => {
+
+  const {user, signOutUser} = useContext(AuthContext)
+
+  const handleSignOut = ()=> {
+    signOutUser()
+  }
 
   const links = <>
     <li><Link to={'/'}>Home</Link></li>
@@ -40,7 +48,18 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end gap-7">
-        <Link
+
+         {
+          user ? <>
+           <Link
+          className="btn bg-blue-600 hover:bg-[#212529] text-white"
+          onClick={handleSignOut}
+        >
+          Log out</Link>
+          
+          </> : <> 
+          
+          <Link
           className="underline hover:text-blue-600 font-semibold"
           to={'/register'}
         >
@@ -50,6 +69,10 @@ const Navbar = () => {
           to={'/signIn'}
         >
           Sign In</Link>
+          </>
+         }
+
+        
       </div>
     </div>
   );

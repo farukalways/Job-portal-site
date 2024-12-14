@@ -2,10 +2,16 @@ import Lottie from 'lottie-react';
 import registration from '../assets/registration.json'
 import google from '../assets/image/google.png'
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import AuthContext from '../ciontext/AuthContext';
 
 const Register = () => {
-  const [error, setError] = useState('')
+  const [errorMassage, setErrorMassage] = useState('')
+  const {createUser, googleLogin} = useContext(AuthContext)
+
+  const handleGoogleLogin= ()=>{
+    googleLogin()
+  }
 
 const handleRegister = (e) =>{
   e.preventDefault()
@@ -15,30 +21,45 @@ const handleRegister = (e) =>{
   const userName = form.Username.value;
   const password = form.password.value;
   const rePassword = form.rePassword.value;
+  const terms = form.terms.checked
 
 
 
-  if (password.length < 6) {
-    setError("Password must be at least 6 characters long.");
-    return;
-  }
+  // if (password.length < 6) {
+  //   setErrorMassage("Password must be at least 6 characters long.");
+  //   return;
+  // }
 
-  if (password !== rePassword) {
-    setError("Passwords do't match.");
-    return;
-  }
+  // if (password !== rePassword) {
+  //   setErrorMassage("Passwords do't match.");
+  //   return;
+  // }
 
-  if(!/[a-z]/.test(password)){
-    setError("one lowercase add")
-    return;
-  }
-  if(!/[A-Z]/.test(password)){
-    setError("one Uppercase add")
-    return;
-  }
+  // if(!/[a-z]/.test(password)){
+  //   setErrorMassage("one lowercase add")
+  //   return;
+  // }
+  // if(!/[A-Z]/.test(password)){
+  //   setErrorMassage("one Uppercase add")
+  //   return;
+  // }
+  // if(!terms){
+  //   setErrorMassage('accept our condistion')
+  //   return;
+  // }
   
-  setError('');
-  // console.log(fullName, email, userName, password, rePassword);
+  setErrorMassage('');
+
+
+  createUser(email, password)
+  .then(result => {
+    console.log(result);
+  })
+  .catch(error=>{
+    console.log(error.message);
+  })
+
+  form.reset();
 }
   
 
@@ -55,7 +76,9 @@ const handleRegister = (e) =>{
           <p className='my-2'>Access to all features. No credit card required.</p>
         </div>
         <button
-          className='w-full flex items-center justify-center gap-2 border p-3 my-5'>
+          className='w-full flex items-center justify-center gap-2 border p-3 my-5'
+          onClick={handleGoogleLogin}
+          >
           <img
             className='w-7'
             src={google} alt="" />
@@ -94,12 +117,12 @@ const handleRegister = (e) =>{
             </label>
             <input type="password" name='rePassword' placeholder="Re-Password" className="input input-bordered" required />
             {
-              error && <p className='text-red-500 text-start'>{error}</p>
+              errorMassage && <p className='text-red-500 text-start'>{errorMassage}</p>
             }
           </div>
           <div className="flex items-center gap-2 mb-3">
             <label className="cursor-pointer label">
-              <input type="checkbox" defaultChecked className="checkbox checkbox-info" />
+              <input type="checkbox" name='terms' className="checkbox checkbox-info" />
             </label>
               <span className="label-text">Agree and terms and policy</span>
           </div>
