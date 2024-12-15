@@ -1,5 +1,12 @@
+import { useNavigate, useParams } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+import Swal from "sweetalert2";
 
 const JobApply = () => {
+  const {id} = useParams();
+  const {user} = useAuth()
+  const navigate = useNavigate()
+
 
 const handleJobRequire = (e) => {
   e.preventDefault()
@@ -7,11 +14,36 @@ const handleJobRequire = (e) => {
   const linkedin = form.Linkedin.value
   const github = form.Github.value
   const resume = form.Resume.value
-  console.log(linkedin, github, resume);
+   
+  const jobApplication = {
+    job_id: id,
+    applicant_email: user.email,
+    linkedin, 
+    github, 
+    resume
+  }
+
+  fetch('http://localhost:5000/job-application', {
+    method: "POST",
+    headers: {
+      'content-type' : 'application/json'
+    },
+    body: JSON.stringify(jobApplication)
+  })
+  .then(res => res.json())
+  .then(data => {
+    if(data.insertedId){
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Your work has been saved",
+        showConfirmButton: false,
+        timer: 1500
+      });
+      navigate('/myApplications')
+    }
+  })
 }
-
-
-
 
   return (
     <div className="hero bg-base-200 min-h-screen">
