@@ -1,16 +1,23 @@
 import Lottie from 'lottie-react';
 import registration from '../assets/registration.json'
 import google from '../assets/image/google.png'
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import AuthContext from '../ciontext/AuthContext';
 
 const SignIn = () => {
   // const [error, setError] = useState('')
   const {userLogin, googleLogin} = useContext(AuthContext)
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location?.state || "/";
 
   const handleGoogleLogin= ()=>{
     googleLogin()
+    .then(()=> {
+      navigate(from)
+    })
+
   }
 
   const handleLogin = (e) => {
@@ -21,6 +28,7 @@ const SignIn = () => {
     userLogin(email, password)
     .then(result => {
       console.log(result);
+      navigate(from)
     })
     .catch(error=>{
       console.log(error.message);
